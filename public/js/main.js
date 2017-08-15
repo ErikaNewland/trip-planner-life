@@ -1,6 +1,10 @@
-function initialize_gmaps() {
+function initialize_gmaps(lat, long) {
+
+    if(!lat || !long) {
+        lat = 40.705189, long = -74.009209
+    }
     // initialize new google maps LatLng object
-    var myLatlng = new google.maps.LatLng(40.705189,-74.009209);
+    var myLatlng = new google.maps.LatLng(lat, long);
     // set the map options hash
     var mapOptions = {
         center: myLatlng,
@@ -12,12 +16,12 @@ function initialize_gmaps() {
     // initialize a new Google Map with the options
     var map = new google.maps.Map(map_canvas_obj, mapOptions);
     // Add the marker to the map
-    // var marker = new google.maps.Marker({
-    //     position: myLatlng,
-    //     title:"Hello World!"
-    // });
+    var marker = new google.maps.Marker({
+        position: myLatlng,
+        title:"Hello World!"
+    });
     // Add the marker to the map by calling setMap()
-//     marker.setMap(map);
+    marker.setMap(map);
 }
 
 $(document).ready(function() {

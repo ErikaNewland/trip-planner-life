@@ -17,116 +17,122 @@
 	              <option>{{ hotel.name }}</option>
 	              {% endfor %}
 	              <option>...</option> -->
-	            </select>
-							<button data-action="add" class="btn btn-primary btn-circle pull-right" id = "hotel-button">+</button>
-						</div>
-						<div>
-							<h4>Restaurants</h4>
-							<select data-type="restaurant" id="restaurant-choices">
+	          </select>
+	          <button data-action="add" class="btn btn-primary btn-circle pull-right" id = "hotel-button">+</button>
+	      </div>
+	      <div>
+	      	<h4>Restaurants</h4>
+	      	<select data-type="restaurant" id="restaurant-choices">
 	              <!-- <option>Bouley</option>
 	              <option>...</option> -->
-	            </select>
-							<button data-action="add" class="btn btn-primary btn-circle pull-right" id = "restaurant-button">+</button>
-						</div>
-						<div>
-							<h4>Activities</h4>
-							<select data-type="activity" id="activity-choices">
+	          </select>
+	          <button data-action="add" class="btn btn-primary btn-circle pull-right" id = "restaurant-button">+</button>
+	      </div>
+	      <div>
+	      	<h4>Activities</h4>
+	      	<select data-type="activity" id="activity-choices">
 	              <!-- <option>Mahayana Buddhist Temple Association</option>
 	              <option>...</option> -->
-	            </select>
-							<button data-action="add" class="btn btn-primary btn-circle pull-right" id = "activity-button">+</button>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="col-xs-6 col-sm-12">
-				<h3>
-					<span id="day-title">
-	          <span>Day 2</span>
-					<button class="btn btn-xs btn-danger remove btn-circle">x</button>
-					</span>
-				</h3>
-				<div class="panel panel-default">
-					<div class="panel-heading">
-						<!-- <div class="day-buttons">
+	          </select>
+	          <button data-action="add" class="btn btn-primary btn-circle pull-right" id = "activity-button">+</button>
+	      </div>
+	  </div>
+	</div>
+</div>
+<div class="col-xs-6 col-sm-12">
+	<h3>
+		<span id="day-title">
+			<span>Day 2</span>
+			<button class="btn btn-xs btn-danger remove btn-circle">x</button>
+		</span>
+	</h3>
+	<div class="panel panel-default">
+		<div class="panel-heading">
+						<div class="day-buttons">
 	            <button class="btn btn-circle day-btn">1</button>
 	            <button class="btn btn-circle day-btn current-day">2</button>
 	            <button class="btn btn-circle day-btn">3</button>
 	            <button class="btn btn-circle day-btn" id="day-add">+</button>
-	          </div> -->
-					</div>
-					<div class="panel-body" id="itinerary">
-						<div>
-							<h4>My Hotel</h4>
-							<ul class="list-group" id="my-hotel-list">
-								<!-- <div class="itinerary-item">
-	                <span class="title">Andaz Wall Street</span>
-	                <button class="btn btn-xs btn-danger remove btn-circle">x</button>
-	              </div> -->
-	            </ul>
-	          </div>
-								<div>
-									<h4>My Restaurants</h4>
-									<ul class="list-group" id = "my-restaurant-list">
-										<!-- <div class="itinerary-item">
-	                <span class="title">Bouley</span>
-	                <button class="btn btn-xs btn-danger remove btn-circle">x</button>
-	              </div> -->
-									</ul>
-								</div>
-								<div>
-									<h4>My Activities</h4>
-									<ul class="list-group" id ="my-activity-list">
-										<!-- <div class="itinerary-item">
-	                <span class="title">Mahayana Buddhist Temple Association</span>
-	                <button class="btn btn-xs btn-danger remove btn-circle">x</button>
-	              </div> -->
-									</ul>
-								</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
+	        </div>
+	    </div>
+	    <div class="panel-body" id="itinerary">
+	    	<div>
+	    		<h4>My Hotel</h4>
+	    		<ul class="list-group" id="my-hotel-list">
+	    			<div class="itinerary-item">
+	    				
+	    			</div>
+	    		</ul>
+	    	</div>
+	    	<div>
+	    		<h4>My Restaurants</h4>
+	    		<ul class="list-group" id = "my-restaurant-list">
+							<div class="itinerary-item"> 
+	               <!--  <button class="btn btn-xs btn-danger remove btn-circle">x</button> -->
+	            </div>
+	        </ul>
+	    </div>
+	    <div>
+	    	<h4>My Activities</h4>
+	    	<ul class="list-group" id ="my-activity-list">
+	    		<div class="itinerary-item">
+	    			<!-- <button class="btn btn-xs btn-danger remove btn-circle">x</button> -->
+	    		</div>
+	    	</ul>
+	    </div>
 	</div>
-	<script>
-		var hotels = {{ hotels | dump | safe }};
-		var restaurants = {{ restaurants | dump | safe }};
-		var activities = {{ activities | dump | safe }};
+</div>
+</div>
+</div>
+</div>
+</div>
+<script>
+	var hotels = {{ hotels | dump | safe }};
+	var restaurants = {{ restaurants | dump | safe }};
+	var activities = {{ activities | dump | safe }};
 
-		$.each(hotels, function(index, value) {
-			$('#hotel-choices').append('<option>' + value.name + '</option>');   //<!--string interpolation-->
+	$.each(hotels, function(index, value) {
+			$('#hotel-choices').append(`<option data-lat=${value.place.location[0]} data-long=${value.place.location[1]}>${value.name}</option>`);   //<!--string interpolation-->
 		});
-		$.each(restaurants, function(index, value) {
-			$('#restaurant-choices').append('<option>' + value.name + '</option>');   //<!--string interpolation-->
+	$.each(restaurants, function(index, value) {
+			$('#restaurant-choices').append(`<option data-lat=${value.place.location[0]} data-long=${value.place.location[1]}>${value.name}</option>`);   //<!--string interpolation-->
 		});
-		$.each(activities, function(index, value) {
-			$('#activity-choices').append('<option>' + value.name + '</option>');   //<!--string interpolation-->
-		})
-    
-
-		$('#hotel-button').click(function(){
-			  const $optionValue = $('#hotel-choices').val();   //refactor with :selected
-				$('#my-hotel-list').append('<li>'+$optionValue+'</li>');
-				alert($option)
-				//alert("lat" + $option.place.location[0] + "long"+ $option.place.location[1])
-
+	$.each(activities, function(index, value) {
+			$('#activity-choices').append(`<option data-lat=${value.place.location[0]} data-long=${value.place.location[1]}>${value.name}</option>`);   //<!--string interpolation-->
 		})
 
-		$('#restaurant-button').click(function(){
-			  const $optionValue = $('#restaurant-choices').val();   //refactor with :selected
-				// const $restaurantChoice = $('#restaurant-choices option[value=' + $optionValue +']').text();
-				$('#my-restaurant-list').append('<li>'+$optionValue+'</li>');
-		})
 
-		$('#activity-button').click(function(){
-				const $optionValue = $('#activity-choices').val();   //refactor with :selected
-				// const $restaurantChoice = $('#restaurant-choices option[value=' + $optionValue +']').text();
-				$('#my-activity-list').append('<li>'+$optionValue+'</li>');
-		})
+	$('#hotel-button').click(function(){
+			  const $optionValue = $('#hotel-choices').val(); 
+			  $('#my-hotel-list .itinerary-item').append('<div class=removeButtonSelector><li>'+$optionValue).append('<button class="btn btn-xs btn-danger remove btn-circle">x</button></li></div>');
+			  var obj = $('#hotel-choices').find(':selected'); 
+			  initialize_gmaps(obj[0].dataset.lat, obj[0].dataset.long);
 
-		
+			})
+
+	$('#restaurant-button').click(function(){
+			  const $optionValue = $('#restaurant-choices').val(); 
+				$('#my-restaurant-list .itinerary-item').append('<div><li>'+$optionValue).append('<button class="btn btn-xs btn-danger remove btn-circle">x</button></li></div>');
+				var obj = $('#hotel-choices').find(':selected'); 
+				initialize_gmaps(obj[0].dataset.lat, obj[0].dataset.long); 
+			})
+
+	$('#activity-button').click(function(){
+				const $optionValue = $('#activity-choices').val(); 
+				$('#my-activity-list .itinerary-item').append('<div><li>'+$optionValue).append('<button class="btn btn-xs btn-danger remove btn-circle">x</button></li></div>');
+				var obj = $('#hotel-choices').find(':selected'); 
+				initialize_gmaps(obj[0].dataset.lat, obj[0].dataset.long);
+			})
+
+	$(".removeButtonSelector").on('click', function() {
+		console.log("HELLO"); 
+		console.log($(this).parent()); 
+		$(this).parent().parent().remove(); 
+	})
 
 
-	</script>
-	{% endblock %}
+	
+
+
+		</script>
+		{% endblock %}
