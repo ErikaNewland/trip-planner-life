@@ -38,10 +38,7 @@
 				<div class="panel panel-default">
 					<div class="panel-heading">
 						<div class="day-buttons">
-							<button class="btn btn-circle day-btn">1</button>
-							<button class="btn btn-circle day-btn current-day">2</button>
-							<button class="btn btn-circle day-btn">3</button>
-							<button class="btn btn-circle day-btn" id="day-add">+</button>
+							<button class="btn btn-circle" id="day-add" value='0'>+</button>
 						</div>
 					</div>
 					<div class="panel-body" id="itinerary">
@@ -70,15 +67,17 @@
 	var hotels = {{ hotels | dump | safe }};
 	var restaurants = {{ restaurants | dump | safe }};
 	var activities = {{ activities | dump | safe }};
+	var schedule = {}; 
+
 
 	$.each(hotels, function(index, value) {
-			$('#hotel-choices').append(`<option data-lat=${value.place.location[0]} data-long=${value.place.location[1]}>${value.name}</option>`);   //<!--string interpolation-->
+			$('#hotel-choices').append(`<option data-lat=${value.place.location[0]} data-long=${value.place.location[1]}>${value.name}</option>`);  
 		});
 	$.each(restaurants, function(index, value) {
-			$('#restaurant-choices').append(`<option data-lat=${value.place.location[0]} data-long=${value.place.location[1]}>${value.name}</option>`);   //<!--string interpolation-->
+			$('#restaurant-choices').append(`<option data-lat=${value.place.location[0]} data-long=${value.place.location[1]}>${value.name}</option>`);   
 		});
 	$.each(activities, function(index, value) {
-			$('#activity-choices').append(`<option data-lat=${value.place.location[0]} data-long=${value.place.location[1]}>${value.name}</option>`);   //<!--string interpolation-->
+			$('#activity-choices').append(`<option data-lat=${value.place.location[0]} data-long=${value.place.location[1]}>${value.name}</option>`);  
 		})
 
 
@@ -87,6 +86,8 @@
 			  $('#my-hotel-list').append('<li>'+$optionValue + '<button class="btn btn-xs btn-danger remove btn-circle">x</button></li>');
 			  var obj = $('#hotel-choices').find(':selected'); 
 			  initialize_gmaps(obj[0].dataset.lat, obj[0].dataset.long);
+			  schedule[$('.current-day').text()].hotels.push($optionValue); 
+			  
 	})
 
 	$('#restaurant-button').click(function(){
@@ -94,6 +95,7 @@
 				$('#my-restaurant-list').append('<li>'+$optionValue + '<button class="btn btn-xs btn-danger remove btn-circle">x</button></li>');
 				var obj = $('#hotel-choices').find(':selected'); 
 				initialize_gmaps(obj[0].dataset.lat, obj[0].dataset.long); 
+				schedule[$('.current-day').text()].restaurants.push($optionValue); 
 			})
 
 	$('#activity-button').click(function(){
@@ -101,12 +103,51 @@
 				$('#my-activity-list').append('<li>'+$optionValue + '<button class="btn btn-xs btn-danger remove btn-circle">x</button></li>');
 				var obj = $('#hotel-choices').find(':selected'); 
 				initialize_gmaps(obj[0].dataset.lat, obj[0].dataset.long);
+				schedule[$('.current-day').text()].activities.push($optionValue); 
 			})
 
 
 	$("#itinerary").on('click', '.remove', function() {
 		$(this).closest('li').remove(); 
 	})
+
+	$("#day-add").on('click', function() {
+		$(this).val(+$(this).val()+1); 
+		$('.list-group').empty(); 
+		$('.day-btn').removeClass('current-day'); 
+		$('.day-buttons').append(`<button class="btn btn-circle day-btn current-day">${this.value}</button>`); 
+		schedule[$('.current-day').text()] = { hotels : [], restaurants : [], activities : []}; 
+	})
+
+	$(".day-buttons").on('click', '.day-btn', function() {
+		$('.day-btn').removeClass('current-day'); 
+		$('.list-group').empty(); 
+		$(this).addClass('current-day'); 
+		renderPanel($('.current-day').text()); 	
+	})
+
+	function renderPanel(dayNum) {
+		console.log(dayNum); 
+		var hotels = schedule[dayNum].hotels; 
+		var restaurants = schedule[dayNum].restaurants; 
+		var activities = schedule[dayNum].activities; 
+
+		hotels.forEach(function(val) {
+			$('#my-hotel-list').append('<li>'+val+ '<button class="btn btn-xs btn-danger remove btn-circle">x</button></li>');
+		})
+		restaurants.forEach(function(val) {
+			$('#my-restaurant-list').append('<li>'+val+ '<button class="btn btn-xs btn-danger remove btn-circle">x</button></li>');
+		})
+		activities.forEach(function(val) {
+			$('#my-activity-list').append('<li>'+val+ '<button class="btn btn-xs btn-danger remove btn-circle">x</button></li>');
+		})
+
+		
+
+	}
+
+
+	
 
 
 		</script>
